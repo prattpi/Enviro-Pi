@@ -30,11 +30,11 @@ Run sudo raspi-config and 1) choose "Change User Password", following the prompt
 
 Now download and unzip the files into a new enviropi directory:
 
-  cd ~pi && wget https://github.com/prattpi/Enviro-Pi/archive/master.zip && unzip master.zip -d /home/pi/enviropi && cd enviropi
+	cd ~pi && wget https://github.com/prattpi/Enviro-Pi/archive/master.zip && unzip master.zip -d /home/pi/enviropi && cd enviropi
 
 Then run the installation file (you will need your sensors' hw addresses or you can manually edit the ini file later):
 
-  ./install.sh 
+	./install.sh 
   
 ## Additional Notes
 

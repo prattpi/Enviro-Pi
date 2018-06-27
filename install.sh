@@ -5,7 +5,7 @@ echo "This script will install and/or modify"
 echo "packages needed for the EnviroPi"
 echo "environmental monitoring device. "
 echo
-echo "Run time 10+ minutes. Reboot required."
+echo "Run time 15+ minutes."
 echo
 
 if [ "$1" != '-y' ]; then
@@ -96,8 +96,10 @@ echo "?>" >> /var/www/includes/db-login.php
 
 addr=`hostname -I`
 
+echo
+echo "----------------------------------------"
 echo "All finished!"
 echo "Web interface viewable at: http://$addr"
+echo "----------------------------------------"
 echo 
-echo "Reboot started..."
-reboot
+

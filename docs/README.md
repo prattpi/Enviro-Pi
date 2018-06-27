@@ -78,7 +78,11 @@ Then run the installation file (you will need your sensors' hw addresses or you 
 
 	chmod +x install.sh
 	./install.sh 
-  
+ 
+The final output of the install script will give you the URL to the dashboard interface, i.e. http://*yourpiipaddress* Once data has had time to accumulate the dashboard will look something like this:
+
+
+
 ## Additional Notes
 
 Each Arduino sensor generates about 28.8 KB of data on in the Pi's disk per day. At that rate, a small-ish SD Card capacity such as 16GB is plenty, even with multiple sensors. 

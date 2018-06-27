@@ -49,14 +49,14 @@ Create an empty file named SSH and add your wireless credentials to a wpa_suppli
 	update_config=1
 
 	network={
-	ssid=" "
-	psk=" "
+	ssid="*your ssid*"
+	psk="*your password*"
 	key_mgmt=WPA-PSK
 	}
 
 Copy both files into the /boot directory of the SD card.
 
-Put SD card in Pi and plug in power to boot up.
+Put SD card in Pi and plug in power to boot up. The Pi should automatically connect to your wireless network. 
 
 SSH to device with the Pi user, e.g. *ssh pi@192.168.50.199*, and enter the default password *raspberry*.
 

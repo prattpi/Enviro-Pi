@@ -53,17 +53,7 @@ def get_reading(adapter,DEVICE,temp_handle,humid_handle=None):
 
 def format_data(DEVICE, stored_data):
    # Format data per device specifics
-   data_value = None
-   if DEVICE == 'F9:93:6A:7D:27:E5': # data from RFDuino, int in little endian order
-      data_value = (int.from_bytes(stored_data, byteorder='little'))/10 
-   elif (DEVICE == 'E6:BF:8E:87:53:19') or (DEVICE == 'E4:6B:FA:9C:C0:A6'): # data from Feathers, hex characters
-      data_value = float(stored_data.decode())
-   elif DEVICE == 'C5:5B:75:1C:B0:44': # data from nRF51 Sensor, hex 16 bit number
-      data_value = (int(hexlify(stored_data), 16))/10 
-      data_value = ("%.1f" % (9.0/5.0 * data_value + 32)) # comes in Celcius from nRf51
-   else:
-      print("Encountered generic device") # just stored bytearray of what was returned
-      data_value = stored_data
+   data_value = float(stored_data.decode())
    return data_value
 
 def create_connection(db,un,pw,host):

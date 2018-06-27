@@ -3,8 +3,8 @@ BLE-based environmental monitoring system
 
 ## Supplies Needed 
 
-1. Computer
-2. 
+1. Computer w/ USB cable to run Arduino IDE
+2. Raspberry Pi Zero W or Raspberry Pi B or Raspberry Pi B+
 
 ## Arduino Device(s) Setup
 
@@ -58,25 +58,30 @@ Copy both files into the /boot directory of the SD card.
 
 Put SD card in Pi and plug in power to boot up. The Pi should automatically connect to your wireless network. 
 
-SSH to device with the Pi user, e.g. *ssh pi@192.168.50.199*, and enter the default password *raspberry*.
+Log in to the Pi over SSH using the *pi* user and enter the default password *raspberry*.
 
-Run an update and upgrade: 
+First, run an update and upgrade: 
 
 	sudo apt-get update && sudo apt-get -y upgrade  
 
-Run sudo raspi-config and 1) choose "Change User Password", following the prompts to add your new password and then 2) set the Pi to boot to command line (choose "#3 Boot Options" -> B1 Desktop/CLI -> B1 Console) and 3) Choose localization options to select your timezone, and then save and reboot as prompted.
+Next, run:
+
+	sudo raspi-config 
+	
+And 1) choose "Change User Password", following the prompts to add your new password and then 2) set the Pi to boot to command line (choose "#3 Boot Options" -> B1 Desktop/CLI -> B1 Console) and 3) Choose localization options to select your timezone, and then save and reboot as prompted.
 
 Now download and unzip the files into a new enviropi directory:
 
-	cd ~pi && wget https://github.com/prattpi/Enviro-Pi/archive/master.zip && unzip master.zip -d /home/pi/enviropi && cd enviropi
+	cd ~pi && wget https://github.com/prattpi/Enviro-Pi/archive/master.zip && unzip master.zip -d /home/pi/ && mv /home/pi/Enviro-Pi-master /home/pi/enviropi && cd enviropi
 
 Then run the installation file (you will need your sensors' hw addresses or you can manually edit the ini file later):
 
+	chmod +x install.sh
 	./install.sh 
   
 ## Additional Notes
 
-### Optionally may add external antenaa and/or screen 
+### Optionally may add external antenna and/or screen 
 ### Instructions how to get the BLE device's hw addresses and handles
-### How to configue different Arduino types in the ini file 
+### How to configure different Arduino types in the ini file 
  

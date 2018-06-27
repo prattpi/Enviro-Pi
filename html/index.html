@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>   
+<link rel="shortcut icon" href="#" />
+<meta charset="utf-8" />   
+<title>EnviroPi</title>      
+<!-- import plugin script -->   
+<script src='/static/Chart.min.js'></script>   
+<script src='/static/jquery-3.3.1.min.js'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 80vh;
+  width: 80vw;
+  margin-top: 10px;
+}
+table {
+  width: 60%;
+  margin: auto;
+}
+#summary {
+  position: relative;
+  top: 10px;
+  padding-bottom: 10px;
+  height: 80vh;
+}
+#timeSpan, #lines_shown {
+  margin: 10px;
+}
+
+</style>
+</head>
+<body>
+       
+<div class="container">
+	<div class="row">
+	<select id="timeSpan" class="btn btn-secondary">
+    		<option value="6">1 hour</option>
+                <option value="36">6 hours</option>
+        	<option value="144" selected>24 hours</option>
+        	<option value="1008">Past week</option>
+        	<option value="">All time</option>
+	</select>
+
+        <select id="lines_shown" class="btn btn-secondary">
+        </select>
+
+	</div>
+	<div class="row">
+  		<div class="col-8 chart-container border rounded" id="chart-container">
+			<canvas id="line-chart"></canvas>
+		</div>
+		<div class="col-4 text-center"> 
+			<div id="summary" class="border rounded"></div>
+		</div>
+	</div>
+</div>
+
+<script>
+// summary data
+function getSummaryData() {
+    var jsonData = $.ajax({
+      url: 'summary_data.php',
+      dataType: 'json',
+    }).done(function (result) {
+      var summary = result;
+      var summaryHTML = "<h1 class=\"display-3\">"+summary["last_temp_f"]+"&deg;F</h1>";
+      if (summary["last_rh"] !== null) {
+        	summaryHTML += "<h1 class=\"display-4\">"+summary["last_rh"]+"%</h1>";
+      }
+        summaryHTML += "<p class=\"text-muted\">Last read: "+summary["last_reading_dt"]+"</p>";
+        summaryHTML += "<table>";
+        summaryHTML += "<tr><td>Max temp:</td><td>"+summary["max_temp"]+"&deg;F</td></tr>";
+        summaryHTML += "<tr><td>Min temp:</td><td>"+summary["min_temp"]+"&deg;F</td></tr>";
+        summaryHTML += "<tr><td>Max humidity:</td><td>"+summary["max_rh"]+"%</td></tr>";
+        summaryHTML += "<tr><td>Min humidity:</td><td>"+summary["min_rh"]+"%</td></tr>";
+        summaryHTML += "<tr><td>Avg temp:</td><td>"+summary["avg_temp"]+"&deg;F</td></tr>";
+        summaryHTML += "<tr><td>Avg humidity:</td><td>"+summary["avg_rh"]+"%</td></tr>";
+        summaryHTML += "<tr><td># readings:</td><td>"+summary["num_readings"]+"</td></tr>";
+        summaryHTML += "</table>";
+	$("#summary").html(summaryHTML);
+        setTimeout(getSummaryData, 5 * 60 * 1000);
+    });
+}
+
+
+// chart data
+var labels = [];
+var all_datasets = [];
+var final_data = [];
+var duration = 144;
+var lines_avail = [];
+
+// get new data via ajax
+function drawLineChart(duration) {
+    var jurl = 'all_device_data.php?num_readings='+duration;
+    var jsonData = $.ajax({
+      url: jurl,
+      dataType: 'json',
+      //async:true,
+    }).done(function (result) {
+      //console.log(result);
+      all_datasets = [];
+      labels.length = 0;
+      lines_avail = [];
+      result.forEach(function(reading) {
+	labels.push(reading["datetime"]);
+	var current_index = (labels.length-1);
+	var devices = reading["device_address"].split(',');
+	var temps = String(reading["temp_f"]).split(',');
+	var rhs = String(reading["rh"]).split(',');
+	for (i = 0; i < devices.length; i++) { 
+	   if(devices[i]+" Temp F" in all_datasets == false){
+                all_datasets[devices[i]+" Temp F"] = [];
+           }
+	   while (all_datasets[devices[i]+" Temp F"].length < current_index){
+		all_datasets[devices[i]+" Temp F"].push(undefined);
+	   }
+           all_datasets[devices[i]+" Temp F"].push(temps[i]);
+           if(devices[i]+" RH %" in all_datasets == false){
+                all_datasets[devices[i]+" RH %"] = [];
+           }
+           while (all_datasets[devices[i]+" RH %"].length < current_index){
+                all_datasets[devices[i]+" RH %"].push(undefined);
+           }
+           all_datasets[devices[i]+" RH %"].push(rhs[i]);
+	}
+      });
+
+	// final dataset in chart format
+	final_data = [];
+	for (k in all_datasets) {
+		var color = getRandomColor();
+		final_data.push({label: k, data: all_datasets[k],fill: false,borderColor: color});
+		lines_avail.push(k);
+      	}
+	//console.log(final_data);
+	createDropdown();
+	createChart();
+       	setTimeout(drawLineChart.bind(null, duration), 5 * 60 * 1000);
+    });
+}
+
+// Populate lines dropdown
+function createDropdown() {
+	$('#lines_shown').empty();
+	var option = '<option>Show all lines</option>';
+	for (i=0;i<lines_avail.length;i++){
+   		option += '<option>' + lines_avail[i] + '</option>';
+	}
+	$('#lines_shown').html(option);
+}
+
+// Date
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + strTime;
+}
+
+// Create random color for each line
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+var myChart;
+
+// create chart function
+function createChart() {
+	// clear the old chart to fix redraw bug
+	var the_canvas = document.getElementById("line-chart");
+	the_canvas.remove();
+	document.getElementById('chart-container').innerHTML = '<canvas id="line-chart"></canvas>'; 
+	
+	// create timestamped new chart    
+	var ctx = document.getElementById("line-chart").getContext("2d");
+	var now = new Date();
+	var title_datestamped = "EnviroPi Monitor Readings ("+formatDate(now)+")";
+
+	myChart = new Chart(document.getElementById("line-chart"), {
+	  type: 'line',
+	  data: {
+	   labels : labels,
+	   datasets: final_data
+	  },
+	  options: {
+		// START animation disable
+	        animation: {
+        	    duration: 0, // general animation time
+        	},
+        	hover: {
+            		animationDuration: 0, // duration of animations when hovering an item
+        	},
+        	responsiveAnimationDuration: 0, // animation duration after a resize
+		// END ANIMATION
+		elements: { point: { 
+				radius: 0, 
+				hitRadius: 10, 
+        			hoverRadius: 5
+				}, 
+            		    line: {
+                                tension: 0 // disables bezier curves
+                            }
+
+			},
+		maintainAspectRatio: false,
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero:true
+					}
+				}]
+			},
+		title: {
+		  	display: true,
+		  	text: title_datestamped,
+			fontSize: 20
+		},
+		responsive: true
+	  }
+	}); // end new Chart 
+}
+
+// redraw chart every x seconds
+$(document).ready(function(){
+	drawLineChart(duration);
+	getSummaryData();
+});
+// redraw chart when timespan dropdown changes
+$('#timeSpan').on('change', function(){
+	drawLineChart(this.value);
+});
+// hide lines when lines dropdown changes
+$('#lines_shown').on('change', function(){
+	var vis_line_label = this.value;
+	// hide all other lines
+	myChart.config.data.datasets.forEach(function(e, i) {
+		var meta = myChart.getDatasetMeta(i);
+		if (vis_line_label === "Show all lines") {
+			meta.hidden = false;	
+		} else if (e.label === vis_line_label) {
+                        meta.hidden = false;
+    		} else {
+			meta.hidden = true;
+		}
+  	});
+  	myChart.update();
+});
+
+</script>
+
+</body>
+</html>
+

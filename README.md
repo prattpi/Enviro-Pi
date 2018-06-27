@@ -22,7 +22,22 @@ Connect the Feather to the Si7021:
 | SCL | SCL      |	
 | - | VIN      |
 
-Open the Arduino file at https://github.com/prattpi/Enviro-Pi/tree/master/Arduino/environ_monitor_si7021_lp connect your device to the computer's USB cable, and select the appropriate board and port from the IDE Tools dropdown. Compile and then upload the code to the Arduino. The serial monitor will output the device's setup actions for debugging if needed. 
+Within the Arduino IDE, install the libraries: SparkFun_Si7021_Breakout_Library.h (instructions at https://github.com/sparkfun/SparkFun_Si701_Breakout_Arduino_Library) and LowPower.h ((https://github.com/rocketscream/Low-Power)
+
+Open the Arduino file at https://github.com/prattpi/Enviro-Pi/tree/master/Arduino/environ_monitor_si7021_lp connect your device to the computer's USB cable, and select the appropriate board and port from the IDE Tools dropdown. Compile and then upload the code to the Arduino. The serial monitor will output the device's setup actions for debugging if needed.
+
+Repeat the setup instructions for any additional Arduino sensors desired. You will also need the hw addresses of each sensor to set up the Pi configuration in the next step. A quick way to gather the addresses is to let the Pi scan for them using the *hcitool* command, e.g.:
+
+	pi@raspberrypi_ble:~ $ sudo hcitool lescan
+	LE Scan ...
+	F8:04:2E:87:52:2F (unknown)
+	46:0E:A3:3D:5A:6A (unknown)
+	46:0E:A3:3D:5A:6A (unknown)
+	C8:69:CD:50:7A:0F (unknown)
+	E4:6B:FA:9C:C0:A6 Bluefruit ES
+	E6:BF:8E:87:53:19 (unknown)
+
+Here you can see one of the sensor devices at the address *E4:6B:FA:9C:C0:A6*. Note these addresses for the next steps. 
 
 ## Raspberry Pi Installation
 

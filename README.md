@@ -1,7 +1,30 @@
 # Enviro-Pi
 BLE-based environmental monitoring system
 
-## Installation
+## Supplies Needed 
+
+1. Computer
+2. 
+
+## Arduino Device(s) Setup
+
+Setup Arduino IDE per the Adafruit instructions at https://learn.adafruit.com/adafruit-feather-32u4-bluefruit-le/setup
+
+Follow the assembly steps for the Adafruit Si7021 sensor, detailed at https://learn.adafruit.com/adafruit-si7021-temperature-plus-humidity-sensor
+
+Connect the Feather to the Si7021:
+
+| Feather        | Si7021          | 
+| ------------- |:-------------:| 
+| 3V     | 3V |
+| GND     | GND       |
+| SDA | SDA      |
+| SCL | SCL      |	
+| - | VIN      |
+
+Open the Arduino file at https://github.com/prattpi/Enviro-Pi/tree/master/Arduino/environ_monitor_si7021_lp connect your device to the computer's USB cable, and select the appropriate board and port from the IDE Tools dropdown. Compile and then upload the code to the Arduino. The serial monitor will output the device's setup actions for debugging if needed. 
+
+## Raspberry Pi Installation
 
 Download and install to SD card the latest full version of Raspbian from https://www.raspberrypi.org/downloads/raspbian/
 

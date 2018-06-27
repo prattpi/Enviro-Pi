@@ -28,10 +28,7 @@ echo "Creating Python vitual environment..."
 
 virtualenv --python=/usr/bin/python3 /home/pi/enviropi/env
 source env/bin/activate
-pip install sqlalchemy
-pip install pygatt
-pip install pexpect
-pip install pymysql
+pip install -r requirements.txt
 
 echo "Creating MySQL database and importing structure..."
 

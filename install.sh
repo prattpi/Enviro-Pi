@@ -78,7 +78,7 @@ done
 echo "Creating crontab to collect data every 10 minutes..."
 
 (crontab -l 2>/dev/null; echo "SHELL=/bin/bash") | crontab -
-(crontab -l 2>/dev/null; echo "*/10 * * * * cd /home/pi/enviropi && source /home/pi/enviropi/env/bin/activate && /home/pi/enviropi/env/bin/python3 /home/pi/enviropi/pygatt_sensors.py") | crontab -
+(crontab -l 2>/dev/null; echo '*/10 * * * * source /home/pi/enviropi/env/bin/activate && sudo "PATH=$PATH" /home/pi/enviropi/env/bin/python3 /home/pi/enviropi/pygatt_sensors.py') | crontab -
 
 echo "Installing web interface..."
 

@@ -81,6 +81,8 @@ Then run the installation file (you will need your sensors' hw addresses or you 
   
 ## Additional Notes
 
+Each Arduino sensor generates about 28.8 KB of data on in the Pi's disk per day. At that rate, a small-ish SD Card capacity such as 16GB is plenty, even with multiple sensors. 
+
 ### Optionally may add external antenna and/or screen 
 ### Instructions how to get the BLE device's hw addresses and handles
 ### How to configure different Arduino types in the ini file 

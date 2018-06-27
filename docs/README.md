@@ -1,5 +1,10 @@
 # Enviro-Pi
+
 BLE-based environmental monitoring system
+
+![alt text](https://prattpi.github.io/Enviro-Pi/docs/IMG_2027.JPG)
+
+![alt text](https://prattpi.github.io/Enviro-Pi/docs/IMG_2020.JPG)
 
 ## Supplies Needed 
 
@@ -81,7 +86,7 @@ Then run the installation file (you will need your sensors' hw addresses or you 
  
 The final output of the install script will give you the URL to the dashboard interface, i.e. http://*yourpiipaddress* Once data has had time to accumulate the dashboard will look something like this:
 
-
+![Data dashboard](https://prattpi.github.io/Enviro-Pi/docs/dashboard.png)
 
 ## Additional Notes
 

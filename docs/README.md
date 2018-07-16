@@ -90,9 +90,61 @@ The final output of the install script will give you the URL to the dashboard in
 
 ## Additional Notes
 
+### Data storage
+
 Each Arduino sensor generates about 28.8 KB of data on in the Pi's disk per day. At that rate, a small-ish SD Card capacity such as 16GB is plenty, even with multiple sensors. 
 
+### Adafruit.io dashboard 
+
+Adafruit.io offers an IoT data service (currently in beta) that can easily be integrated into the pygatt script. More info at https://learn.adafruit.com/welcome-to-adafruit-io
+
+source /home/pi/enviropi/env/bin/activate
+pip install adafruit-io
+
 ### Optionally may add external antenna and/or screen 
+
+For screen, such as the Waveshare 3.5inch RPi LCD (B), need to install the GUI (if installed Raspbian Lite version):
+
+	sudo apt install raspberrypi-ui-mods
+	
+Then follow instructions here: https://www.waveshare.com/wiki/3.5inch_RPi_LCD_(B)#Method_1._Driver_installation
+
+For wifi adapter for better range, to get it to use that as wlan0 you need to disable the built-in wifi by doing the following:
+
+	sudo nano /etc/modprobe.d/brcmfmac.conf
+	
+And add the single line to the file:
+
+	blacklist brcmfmac
+
+Reboot and the Pi will come up again with the external wifi adapter as wlan0.
+
+For screen GUI:
+
+source /home/pi/enviropi/env/bin/activate
+sudo apt-get install python3-tk
+
+Screen file is:
+
+/home/pi/enviropi/screen.py
+
+With .desktop file to run it:
+
+	(env) pi@raspberrypi_ble:~/enviropi $ more ../Desktop/GUI.desktop
+	
+	[Desktop Entry]
+	Name=EnviroPi Control
+	Icon=/usr/share/pixmaps/debian-logo.png
+	Terminal=true
+	Type=Application
+	Exec=/home/pi/enviropi/env/bin/python /home/pi/enviropi/screen.py
+
+To start at boot time:
+
+	nano .config/lxsession/LXDE-pi/autostart
+
+	@/home/pi/enviropi/env/bin/python /home/pi/enviropi/screen.py
+
 ### Instructions how to get the BLE device's hw addresses and handles
 ### How to configure different Arduino types in the ini file 
  

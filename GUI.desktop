@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=EnviroPi Control
+Icon=/usr/share/pixmaps/debian-logo.png
+Terminal=true
+Type=Application
+Exec=/home/pi/enviropi/env/bin/python /home/pi/enviropi/screen.py

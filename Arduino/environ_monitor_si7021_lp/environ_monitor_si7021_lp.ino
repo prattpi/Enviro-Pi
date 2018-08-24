@@ -230,21 +230,12 @@ void loop(void)
   }
   
   /* Delay before next measurement update */
-  /* CAN I SLOW THIS TO EVERY 10 MIN, THEN Have it read and push when a device connects? not sure it will wake though.. 
-  https://github.com/rocketscream/Low-Power
-  http://www.gammon.com.au/forum/?id=11497
-  http://www.gammon.com.au/forum/?id=11497
-  or try this seems similar
-  https://github.com/adafruit/Adafruit_SleepyDog
- This isn't as low power apparently
-    LowPower.idle(SLEEP_8S, ADC_OFF, TIMER4_OFF, TIMER3_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART1_OFF, TWI_OFF, USB_OFF);
-  */
 
   Serial.println("Powering down between readings...");
   delay(1000);
 
   // Sleep for about 10 minutes between readings
-  // This will kill serial output but device still functions
+  // Note: This will kill serial output but device is still running!
   int i;
   for (i = 0; i < 66; i++)
   {  

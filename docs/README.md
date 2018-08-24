@@ -9,7 +9,8 @@ BLE-based environmental monitoring system
 ## Supplies Needed 
 
 1. Computer w/ USB cable to run Arduino IDE
-2. Raspberry Pi Zero W or Raspberry Pi B or Raspberry Pi B+
+2. Central device: Raspberry Pi Zero W or Raspberry Pi B or Raspberry Pi B+ w/ optional screen and/or external wifi antenna
+3. For *each* desired sensor: 1) Adafruit Feather 32u4 Bluefruit (with pre-soldered pins if desired) 2) Adafruit Si7021 sensor 3) LiPo or AA or AAA battery pack with JST connector and 4) jumper cables, solder, and header pins to connect sensor
 
 ## Arduino Device(s) Setup
 
@@ -145,6 +146,5 @@ To start at boot time:
 
 	@/home/pi/enviropi/env/bin/python /home/pi/enviropi/screen.py
 
-### Instructions how to get the BLE device's hw addresses and handles
-### How to configure different Arduino types in the ini file 
+
  

@@ -1,4 +1,21 @@
+
+/*
+BLE-based environmental monitoring system
+*/
+
+/*
+Adafruit Arduino library for nRF51822-based Adafruit Bluefruit LE modules
+
+Available at:
+https://github.com/adafruit/Adafruit_BluefruitLE_nRF51
+*/
 #include "Adafruit_BluefruitLE_SPI.h"
+/*
+Sparkfun library for breakout board for the Si7021 Temperature and Humidity sensor.
+
+Available at:
+https://github.com/sparkfun/Si7021_Breakout
+*/
 #include "SparkFun_Si7021_Breakout_Library.h"
 #include "Wire.h"
 #include "LowPower.h"

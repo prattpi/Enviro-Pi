@@ -64,7 +64,7 @@ int32_t btMeasureCharId;
 /**************************************************************************/
 void setup(void)
 {
-  while (!Serial); // required for Flora & Micro
+  //while (!Serial); // uncomment to test via Serial output
   delay(500);
 
   boolean success;

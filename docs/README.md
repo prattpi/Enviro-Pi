@@ -1,6 +1,6 @@
 # Enviro-Pi
 
-BLE-based environmental monitoring system
+LAMP and BLE-based environmental monitoring system for the Raspberry Pi and Arduino. 
 
 ![alt text](https://prattpi.github.io/Enviro-Pi/IMG_2027.JPG)
 
